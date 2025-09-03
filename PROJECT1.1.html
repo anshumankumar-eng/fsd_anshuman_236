@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CogniCare - AI-Assisted Early Screening Tool(Project)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #16630a, #f1953e, #fdbb2d);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        header {
+            background: linear-gradient(90deg, #2c3e50, #4ca1af);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-style: italic;
+            font-weight: 300;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        
+        .info-panel {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+        
+        .test-panel {
+            flex: 2;
+            min-width: 400px;
+            padding: 20px;
+            border-left: 1px solid #eee;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #4ca1af;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .disclaimer {
+            background-color: #ffe6e6;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+            margin: 20px 0;
+        }
+        
+        .features {
+            margin: 20px 0;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .feature i {
+            color: #4ca1af;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            margin: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            touch-action: none;
+            width: 100%;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background-color: #4ca1af;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin: 5px;
+            flex-grow: 1;
+        }
+        
+        button:hover {
+            background-color: #2c3e50;
+        }
+        
+        #analyze-btn {
+            background-color: #2c3e50;
+        }
+        
+        #analyze-btn:hover {
+            background-color: #1a252f;
+        }
+        
+        #clear-btn {
+            background-color: #e74c3c;
+        }
+        
+        #clear-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .risk-meter {
+            height: 30px;
+            background: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
+            border-radius: 15px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .risk-needle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #2c3e50;
+            transform: translateX(-50%);
+        }
+        
+        .risk-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 5px 0;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .interpretation {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .test-panel {
+                border-left: none;
+                border-top: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CogniCare</h1>
+            <p class="tagline">AI-Assisted Early Cognitive Screening Tool</p>
+        </header>
+        
+        <div class="content">
+            <div class="info-panel">
+                <h2>About CogniCare</h2>
+                <p>CogniCare is a proof-of-concept tool designed to assist healthcare professionals in early screening for cognitive impairment by analyzing clock drawings.</p>
+                
+                <div class="disclaimer">
+                    <strong>Important Disclaimer:</strong> This tool is for screening purposes only and is not a diagnostic tool. Always consult a qualified healthcare professional for a comprehensive evaluation.
+                </div>
+                
+                <div class="features">
+                    <h3>How It Works</h3>
+                    <div class="feature">
+                        <i class="fas fa-draw-polygon"></i>
+                        <span>Draw a clock with the time set to 11:10</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-brain"></i>
+                        <span>AI analyzes drawing patterns and features</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Receive a risk assessment with metrics</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>All processing happens locally in your browser</span>
+                    </div>
+                </div>
+                
+                <p>The analysis focuses on indicators such as drawing completeness, number placement, hand positioning, and tremors in drawing execution.</p>
+            </div>
+            
+            <div class="test-panel">
+                <h2>Clock Drawing Test</h2>
+                <p>Please draw a clock face with all numbers and set the time to <strong>11:10</strong>.</p>
+                
+                <canvas id="drawing-canvas" width="500" height="500"></canvas>
+                
+                <div class="controls">
+                    <button id="start-btn"><i class="fas fa-play"></i> Start Test</button>
+                    <button id="clear-btn"><i class="fas fa-eraser"></i> Clear Drawing</button>
+                    <button id="analyze-btn"><i class="fas fa-search"></i> Analyze Drawing</button>
+                </div>
+                
+                <div id="result-container" class="result-container" style="display: none;">
+                    <h2>Analysis Results</h2>
+                    
+                    <div class="risk-meter">
+                        <div id="risk-needle" class="risk-needle" style="left: 20%;"></div>
+                    </div>
+                    <div class="risk-labels">
+                        <span>Low Risk</span>
+                        <span>Moderate Risk</span>
+                        <span>High Risk</span>
+                    </div>
+                    
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value" id="completeness-value">87%</div>
+                            <div class="metric-label">Completeness</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="tremor-value">12%</div>
+                            <div class="metric-label">Tremor Index</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="number-accuracy">92%</div>
+                            <div class="metric-label">Number Accuracy</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="time-accuracy">85%</div>
+                            <div class="metric-label">Time Accuracy</div>
+                        </div>
+                    </div>
+                    
+                    <div id="interpretation" class="interpretation">
+                        <strong>Interpretation:</strong> The drawing shows strong spatial organization with mostly correct number placement and appropriate hand positioning. Minor irregularities were detected but are within expected ranges for this screening.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>CogniCare &copy; 2023 | For demonstration purposes only | HCL Hackathon Project</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const canvas = document.getElementById('drawing-canvas');
+            const startBtn = document.getElementById('start-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const resultContainer = document.getElementById('result-container');
+            const riskNeedle = document.getElementById('risk-needle');
+            const completenessValue = document.getElementById('completeness-value');
+            const tremorValue = document.getElementById('tremor-value');
+            const numberAccuracy = document.getElementById('number-accuracy');
+            const timeAccuracy = document.getElementById('time-accuracy');
+            const interpretation = document.getElementById('interpretation');
+            
+            // Set up drawing context
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            
+            // Initialize canvas
+            function initCanvas() {
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.strokeStyle = '#2c3e50';
+                ctx.fillStyle = '#f8f9fa';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            
+            initCanvas();
+            
+            // Drawing functions
+            function startDrawing(e) {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+            
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+            
+            function stopDrawing() {
+                isDrawing = false;
+            }
+            
+            // Event listeners for drawing
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            // Touch events for mobile devices
+            canvas.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousedown', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            });
+            
+            canvas.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            });
+            
+            canvas.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                const mouseEvent = new MouseEvent('mouseup', {});
+                canvas.dispatchEvent(mouseEvent);
+            });
+            
+            // Button event listeners
+            startBtn.addEventListener('click', function() {
+                initCanvas();
+                resultContainer.style.display = 'none';
+            });
+            
+            clearBtn.addEventListener('click', function() {
+                initCanvas();
+                resultContainer.style.display = 'none';
+            });
+            
+            analyzeBtn.addEventListener('click', function() {
+                // Simulate AI analysis with randomized results for demo purposes
+                const completeness = Math.floor(Math.random() * 30) + 70; // 70-100%
+                const tremor = Math.floor(Math.random() * 20) + 5; // 5-25%
+                const numAccuracy = Math.floor(Math.random() * 30) + 70; // 70-100%
+                const timeAcc = Math.floor(Math.random() * 30) + 70; // 70-100%
+                
+                // Calculate risk score (lower is better)
+                const riskScore = (100 - completeness) * 0.3 + tremor * 0.4 + 
+                                 (100 - numAccuracy) * 0.2 + (100 - timeAcc) * 0.1;
+                
+                // Update UI with results
+                completenessValue.textContent = `${completeness}%`;
+                tremorValue.textContent = `${tremor}%`;
+                numberAccuracy.textContent = `${numAccuracy}%`;
+                timeAccuracy.textContent = `${timeAcc}%`;
+                
+                // Position risk needle (0-100 scale)
+                const needlePosition = Math.min(100, Math.max(0, riskScore));
+                riskNeedle.style.left = `${needlePosition}%`;
+                
+                // Set interpretation text based on risk
+                if (riskScore < 25) {
+                    interpretation.innerHTML = `<strong>Interpretation:</strong> The drawing shows strong spatial organization with correct number placement and appropriate hand positioning. Minimal irregularities were detected. This result suggests <strong>low risk</strong> of cognitive impairment.`;
+                } else if (riskScore < 50) {
+                    interpretation.innerHTML = `<strong>Interpretation:</strong> The drawing shows generally good organization with mostly correct number placement. Some minor irregularities were detected that may warrant further observation. This result suggests <strong>moderate risk</strong> of cognitive impairment.`;
+                } else {
+                    interpretation.innerHTML = `<strong>Interpretation:</strong> The drawing shows significant spatial disorganization with number placement errors and hand positioning inaccuracies. Multiple irregularities were detected. This result suggests <strong>high risk</strong> of cognitive impairment and should be followed up with a professional evaluation.`;
+                }
+                
+                // Show results
+                resultContainer.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CogniCare - Early Screening Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <style>body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+h1 {
+    color: #2c3e50;
+}
+canvas {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    touch-action: none; /* Essential for mobile drawing */
+}
+button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 16px;
+}
+button:hover {
+    background-color: #2980b9;
+}
+#report {
+    text-align: left;
+    background-color: #cce976;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #3498db;
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CogniCare</h1>
+            <p>AI-Assisted Cognitive Screening Tool (Proof of Concept)</p>
+        </header>
+
+        <main>
+            <div id="intro-screen">
+                <p>This tool analyzes a Clock Drawing Test (CDT) to look for signs of cognitive impairment. It is designed for clinical support and is <strong>not a diagnostic tool</strong>.</p>
+                <button id="start-btn">Begin Assessment</button>
+            </div>
+
+            <div id="test-screen" style="display: none;">
+                <p>Please draw a clock. Set the time to <strong>11:10</strong>.</p>
+                <canvas id="drawing-canvas" width="400" height="400"></canvas>
+                <br>
+                <button id="analyze-btn">Analyze Drawing</button>
+                <button id="clear-btn">Clear Canvas</button>
+            </div>
+
+            <div id="result-screen" style="display: none;">
+                <h2>Analysis Report</h2>
+                <div id="report"></div>
+                <button id="restart-btn">New Test</button>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
