@@ -1,0 +1,9 @@
+#prod-container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+}
+#prod-container div{
+    border: 2px solid black;
+    height:500px;
+}
